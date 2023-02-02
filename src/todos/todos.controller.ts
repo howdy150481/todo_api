@@ -5,14 +5,13 @@ import { TodosService } from './todos.service';
 export class TodosController {
   constructor(private todosService: TodosService) {}
 
-  @Post()
-  create(@Body() body): any[] {
-    this.todosService.createTodo(body.title);
+  @Get()
+  get(): any[] {
     return this.todosService.getAllTodos();
   }
 
-  @Get()
-  list(): any[] {
-    return this.todosService.getAllTodos();
+  @Post()
+  post(@Body() body): void {
+    this.todosService.createTodo(body.title);
   }
 }
