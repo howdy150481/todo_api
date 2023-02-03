@@ -9,14 +9,13 @@ export class TodosService {
     return this.prisma.todos.findMany();
   }
 
-  async create(title: string): Promise<number> {
-    const todo = await this.prisma.todos.create({
+  async create(title: string): Promise<any[]> {
+    await this.prisma.todos.create({
       data: {
         title: title,
       },
     });
-
-    return todo.id;
+    return this.prisma.todos.findMany();
   }
 
   async update(body: any): Promise<void> {
@@ -31,15 +30,17 @@ export class TodosService {
         },
         data: {
           title: body.title,
+          done: !body.done,
         },
       });
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: number): Promise<any[]> {
     const todosCount = await this.prisma.todos.count({ where: { id: id } });
     if (todosCount > 0) {
       await this.prisma.todos.delete({ where: { id: id } });
     }
+    return this.prisma.todos.findMany();
   }
 }
